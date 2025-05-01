@@ -2,27 +2,39 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nivel_de_agua/main.dart';
+import 'login_screen.dart';
+
+
 
 // classe do splash
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return AnimatedSplashScreen(
-      splash: Column(
-        children: [
-          Center(
-            child: Lottie.asset(
-              "assets/animations/loadinganimation.json",
-            ), //caminho da animacao na assets
-          ),
-        ],
+    return const Scaffold(
+      body: Center(
+        child: Text(
+          "Nivelamento de Água",
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
       ),
-      nextScreen: const HomeScreen(), //tela que vai apos o splash (inicial)
-      splashIconSize: 400, // tamanho do icone do splash
-      backgroundColor: Colors.transparent, // cor de fundo
-      duration: 3000, // duracao em milisegundos
     );
   }
 }
