@@ -12,6 +12,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
+  bool _obscurePassword = true;
 
   void _login() {
     if (_userController.text == 'admin' && _passController.text == '123') {
@@ -46,16 +47,14 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // AppBar removido!
       backgroundColor: Colors.black,
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView( // Adicionei pra evitar erro em telas pequenas
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 50),
-              // imagem do logo
               ClipOval(
                 child: Image.asset(
                   'assets/logo.png',
@@ -64,9 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              // Campos de usuário e senha
-              const SizedBox(height: 60), // Espaçamento maior entre a imagem e as caixas
-              // Campos de entrada de usuário e senha
               const SizedBox(height: 60),
               SizedBox(
                 width: 300,
@@ -98,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 300,
                 child: TextField(
                   controller: _passController,
+                  obscureText: _obscurePassword,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: "Senha",
@@ -116,57 +113,52 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(8),
                       borderSide: const BorderSide(color: Colors.deepPurple),
                     ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),
               const SizedBox(height: 32),
-              // Botões
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple, // Fundo preto
-                      foregroundColor: Colors.white, // Texto roxo
+                      backgroundColor: Colors.deepPurple,
+                      foregroundColor: Colors.white,
                       textStyle: const TextStyle(fontWeight: FontWeight.bold),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
-                      ),                      
+                      ),
                     ),
                     onPressed: _login,
                     child: const Text("Entrar"),
                   ),
-                  const SizedBox(width: 16), // Espaço entre os botões
+                  const SizedBox(width: 16),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple, // Fundo preto
-                      foregroundColor: Colors.white, // Texto roxo
+                      backgroundColor: Colors.deepPurple,
+                      foregroundColor: Colors.white,
                       textStyle: const TextStyle(fontWeight: FontWeight.bold),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
-                      ),                      
+                      ),
                     ),
                     onPressed: _navigateToRegister,
                     child: const Text("Cadastrar"),
                   ),
                 ],
-              ),
-              const SizedBox(height: 16),
-              // Botão "Esqueci a senha" centralizado abaixo
-              TextButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Funcionalidade ainda não implementada"),
-                    ),
-                  );
-                },
-                child: const Text(
-                  "Esqueci a senha",
-                  style: TextStyle(
-                    color: Colors.white, // Texto roxo
-                  ),
-                ),
               ),
             ],
           ),

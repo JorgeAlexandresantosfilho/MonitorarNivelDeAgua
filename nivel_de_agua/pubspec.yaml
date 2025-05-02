@@ -30,5 +30,6 @@ flutter:
 
   # Assets (caminho corrigido para funcionar no Linux/macOS também)
   assets:
+    - assets/profile.jpg
     - assets/logo.png
     - assets/animations/loadinganimation.json

@@ -25,16 +25,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //app bar
-      appBar: AppBar(
-        title: Text(""),
-        backgroundColor: Colors.deepPurple,
-        titleTextStyle: TextStyle(
-          fontStyle: FontStyle.italic,
-          letterSpacing: 1.5,
-          fontSize: 25,
-        ),
-      ),
       //botao que vai fazer conexao com a tela de bluetooth
       body: Center(
         child: ElevatedButton.icon(
@@ -48,7 +38,7 @@ class HomeScreen extends StatelessWidget {
           icon:  Icon(Icons.bluetooth),
           label:  Text("Conectar Bluetooth"),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.purple,
+            backgroundColor: Colors.deepPurple,
             foregroundColor: Colors.white,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           ),

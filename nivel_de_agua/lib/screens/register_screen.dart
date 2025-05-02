@@ -16,7 +16,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _register() {
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
-
+    // Funcionalidade da caixa de senha 
     if (password.length < 5 || confirmPassword.length < 5) {
       _showError("A senha deve ter no mínimo 5 caracteres.");
     } else if (password != confirmPassword) {
