@@ -67,16 +67,29 @@ class _LoginScreenState extends State<LoginScreen> {
               // Campos de usuário e senha
               const SizedBox(height: 60), // Espaçamento maior entre a imagem e as caixas
               // Campos de entrada de usuário e senha
+              const SizedBox(height: 60),
               SizedBox(
                 width: 300,
                 child: TextField(
                   controller: _userController,
-                  style: const TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
-                  decoration: const InputDecoration(
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
                     labelText: "Usuário",
+                    labelStyle: const TextStyle(color: Colors.white),
                     filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(),
+                    fillColor: Colors.black,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.deepPurple),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.deepPurple),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.deepPurple),
+                    ),
                   ),
                 ),
               ),
@@ -85,14 +98,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 300,
                 child: TextField(
                   controller: _passController,
-                  style: const TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
-                  decoration: const InputDecoration(
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
                     labelText: "Senha",
+                    labelStyle: const TextStyle(color: Colors.white),
                     filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(),
+                    fillColor: Colors.black,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.deepPurple),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.deepPurple),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.deepPurple),
+                    ),
                   ),
-                  obscureText: true,
                 ),
               ),
               const SizedBox(height: 32),
@@ -102,9 +126,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black, // Fundo preto
-                      foregroundColor: Colors.deepPurple, // Texto roxo
+                      backgroundColor: Colors.deepPurple, // Fundo preto
+                      foregroundColor: Colors.white, // Texto roxo
                       textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),                      
                     ),
                     onPressed: _login,
                     child: const Text("Entrar"),
@@ -112,9 +139,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(width: 16), // Espaço entre os botões
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black, // Fundo preto
-                      foregroundColor: Colors.deepPurple, // Texto roxo
+                      backgroundColor: Colors.deepPurple, // Fundo preto
+                      foregroundColor: Colors.white, // Texto roxo
                       textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),                      
                     ),
                     onPressed: _navigateToRegister,
                     child: const Text("Cadastrar"),
@@ -134,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: const Text(
                   "Esqueci a senha",
                   style: TextStyle(
-                    color: Colors.deepPurple, // Texto roxo
+                    color: Colors.white, // Texto roxo
                   ),
                 ),
               ),
