@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       //app bar
       appBar: AppBar(
-        title: Text("Bem Vindo"),
+        title: Text(""),
         backgroundColor: Colors.deepPurple,
         titleTextStyle: TextStyle(
           fontStyle: FontStyle.italic,
