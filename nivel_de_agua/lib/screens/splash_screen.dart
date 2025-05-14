@@ -1,57 +1,27 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
+import 'package:lottie/lottie.dart';
+import 'package:nivel_de_agua/main.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  double _opacity = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Inicia a animação de fade-in
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        _opacity = 1.0;
-      });
-    });
-
-    // Inicia a transição para a próxima tela com fade-out
-    Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
-      setState(() {
-        _opacity = 0.0;
-      });
-
-      // Aguarda a animação de fade-out antes de navegar
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: AnimatedOpacity(
-          duration: const Duration(seconds: 1), // Duração do fade-in e fade-out
-          opacity: _opacity, // Define a opacidade do logotipo
-          child: Image.asset(
-            'assets/logo.png',
-            width: 150,
-            height: 150,
+    return AnimatedSplashScreen(
+      splash: Column(
+        children: [
+          Center(
+            child: Lottie.asset(
+              "assets/animations/loadinganimation.json", // Caminho da animação na assets
+            ),
           ),
-        ),
+        ],
       ),
+      nextScreen: const HomeScreen(), // Tela que vem após o splash
+      splashIconSize: 400, // Tamanho do ícone do splash
+      backgroundColor: Colors.transparent, // Cor de fundo
+      duration: 3000, // Duração em milissegundos
     );
   }
 }

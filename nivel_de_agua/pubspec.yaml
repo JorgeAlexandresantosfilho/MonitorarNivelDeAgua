@@ -28,7 +28,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # Assets (caminho corrigido para funcionar no Linux/macOS também)
+  # Assets 
   assets:
     - assets/profile.png
     - assets/logo.png
