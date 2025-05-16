@@ -10,13 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Dependências do projeto antigo
+
   flutter_bluetooth_serial: ^0.4.0 
   permission_handler: ^11.0.0
   animated_splash_screen: ^1.3.0
   lottie: ^3.3.1
 
-  # Ícones padrão iOS
+
   cupertino_icons: ^1.0.8
   http: ^1.4.0
 
@@ -28,7 +28,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # Assets 
+
   assets:
     - assets/profile.png
     - assets/logo.png
