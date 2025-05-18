@@ -11,12 +11,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   void _register() {
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
-    // Funcionalidade da caixa de senha 
+    // Funcionalidade da caixa de senha
     if (password.length < 5 || confirmPassword.length < 5) {
       _showError("A senha deve ter no mínimo 5 caracteres.");
     } else if (password != confirmPassword) {
@@ -32,16 +36,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _showError(String message) {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text("Erro"),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("OK"),
+      builder:
+          (_) => AlertDialog(
+            title: const Text("Erro"),
+            content: Text(message),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("OK"),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
@@ -81,26 +86,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _usernameController,
                   decoration: _inputDecoration("Usuário"),
                   style: const TextStyle(color: Colors.white),
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _emailController,
                   decoration: _inputDecoration("E-mail"),
                   style: const TextStyle(color: Colors.white),
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _passwordController,
-                  decoration: _inputDecoration("Senha"),
-                  obscureText: true,
+                  decoration: _inputDecoration("Senha").copyWith(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                    ),
+                  ),
+                  obscureText: _obscurePassword,
                   style: const TextStyle(color: Colors.white),
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _confirmPasswordController,
-                  decoration: _inputDecoration("Confirmar Senha"),
-                  obscureText: true,
+                  decoration: _inputDecoration("Confirmar Senha").copyWith(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureConfirmPassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureConfirmPassword = !_obscureConfirmPassword;
+                        });
+                      },
+                    ),
+                  ),
+                  obscureText: _obscureConfirmPassword,
                   style: const TextStyle(color: Colors.white),
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (_) => _register(),
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(
@@ -111,7 +152,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 12,
+                    ),
                   ),
                   child: const Text("Cadastrar"),
                 ),

@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+/// Tela responsável por listar e selecionar dispositivos Bluetooth disponíveis.
+/// Solicita permissões necessárias, ativa o Bluetooth e permite ao usuário
+/// selecionar um dispositivo da lista descoberta.
 class BluetoothScreen extends StatefulWidget {
+  /// Cria uma instância da tela de Bluetooth.
   const BluetoothScreen({super.key});
 
   @override
@@ -10,8 +14,11 @@ class BluetoothScreen extends StatefulWidget {
 }
 
 class _BluetoothScreenState extends State<BluetoothScreen> {
+  /// Lista de dispositivos Bluetooth encontrados.
   List<BluetoothDevice> devices = [];
+  /// Dispositivo atualmente selecionado.
   BluetoothDevice? selectedDevice;
+  /// Indica se a busca por dispositivos está em andamento.
   bool isDiscovering = false;
 
   @override
@@ -20,6 +27,7 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
     _initBluetooth();
   }
 
+  /// Inicializa o Bluetooth, solicita permissões e inicia a descoberta de dispositivos.
   Future<void> _initBluetooth() async {
     // Solicita permissões
     await [
@@ -31,13 +39,14 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
 
     // Ativa Bluetooth se não estiver ligado
     final isEnabled = await FlutterBluetoothSerial.instance.isEnabled;
-  if (isEnabled == false) {
-    await FlutterBluetoothSerial.instance.requestEnable();
-  }
+    if (isEnabled == false) {
+      await FlutterBluetoothSerial.instance.requestEnable();
+    }
 
     _startDiscovery();
   }
 
+  /// Inicia a descoberta de dispositivos Bluetooth próximos.
   void _startDiscovery() {
     setState(() {
       isDiscovering = true;
@@ -51,6 +60,8 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
     }, onDone: () => setState(() => isDiscovering = false));
   }
 
+  /// Seleciona um dispositivo Bluetooth da lista.
+  /// [device] Dispositivo selecionado.
   void _selectDevice(BluetoothDevice device) {
     setState(() => selectedDevice = device);
     ScaffoldMessenger.of(context).showSnackBar(
@@ -63,6 +74,10 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dispositivos Bluetooth'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),

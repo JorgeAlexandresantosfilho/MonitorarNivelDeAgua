@@ -14,8 +14,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passController = TextEditingController();
   bool _obscurePassword = true;
 
+  // Controla a visibilidade da senha
   void _login() {
+    FocusScope.of(context).unfocus(); // Fecha o teclado
     if (_userController.text == 'admin' && _passController.text == '123') {
+      _userController.clear();
+      _passController.clear();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -37,13 +41,18 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  // Navega para a tela de registro
   void _navigateToRegister() {
+    FocusScope.of(context).unfocus(); // Fecha o teclado
+    _userController.clear();
+    _passController.clear();
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const RegisterScreen()),
     );
   }
 
+// Limpa os campos de texto
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _passController,
                   obscureText: _obscurePassword,
                   style: const TextStyle(color: Colors.white),
+                  onSubmitted: (_) => _login(),
                   decoration: InputDecoration(
                     labelText: "Senha",
                     labelStyle: const TextStyle(color: Colors.white),
