@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'register_screen.dart';
+import 'alterpass_screen.dart'; 
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -40,6 +41,13 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+
+  void _navigateToAlterPass() {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const AlterPassScreen()),
+  );
+}
 
   // Navega para a tela de registro
   void _navigateToRegister() {
@@ -169,6 +177,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text("Cadastrar"),
                   ),
                 ],
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: _navigateToAlterPass,
+                child: const Text(
+                  "Esqueci minha senha",
+                  style: TextStyle(
+                    color: Colors.deepPurple,
+                    fontSize: 16,
+                    decoration: TextDecoration.underline, // Define o sublinhado
+                  ),
+                ),
               ),
             ],
           ),
