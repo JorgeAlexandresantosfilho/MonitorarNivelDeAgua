@@ -1,7 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:nivel_de_agua/main.dart';
+import 'package:nivel_de_agua/screens/login_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -18,9 +18,9 @@ class SplashScreen extends StatelessWidget {
           ),
         ],
       ),
-      nextScreen: const HomeScreen(), // Tela que vem após o splash
+      nextScreen: const LoginScreen(), // Tela que vem após o splash
       splashIconSize: 400, // Tamanho do ícone do splash
-      backgroundColor: Colors.transparent, // Cor de fundo
+      backgroundColor: Colors.black, // Cor de fundo
       duration: 3000, // Duração em milissegundos
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'register_screen.dart';
 import 'alter_screen.dart';
+import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,28 +15,48 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   bool _obscurePassword = true;
-          // Acesso Admin
-  void _login() {
-    if (_userController.text == 'admin' && _passController.text == '123') {
+
+  void _login() async {
+    final login = _userController.text.trim();
+    final senha = _passController.text.trim();
+
+    if (login.isEmpty || senha.isEmpty) {
+      _showErrorDialog("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    final response = await AuthService.login(login, senha);
+
+    if (response['success'] == true) {
+      final usuario = response['data']['usuario'];
+
+      // aqui é salvo os dados do usuario (local)
+      await saveUserData(usuario);
+
+      // mandando pra home
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
     } else {
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: const Text("Erro"),
-          content: const Text("Usuário ou senha inválidos"),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("OK"),
-            ),
-          ],
-        ),
-      );
+      _showErrorDialog(response['message'] ?? 'Falha no login');
     }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Erro"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
   }
 
   void _navigateToRegister() {
@@ -71,14 +92,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              const SizedBox(height: 60), //Caixas de entrada
+              const SizedBox(height: 60),
               SizedBox(
                 width: 300,
                 child: TextField(
                   controller: _userController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    labelText: "Usuário",
+                    labelText: "Login",
                     labelStyle: const TextStyle(color: Colors.white),
                     filled: true,
                     fillColor: Colors.black,
@@ -137,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 32), //Botões
+              const SizedBox(height: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

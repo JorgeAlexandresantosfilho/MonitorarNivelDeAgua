@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/register_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -10,22 +11,39 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _telefoneController = TextEditingController(); // <- Telefone
 
-  void _register() {
+  void _register() async {
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
-    // Funcionalidade da caixa de senha 
+
     if (password.length < 5 || confirmPassword.length < 5) {
       _showError("A senha deve ter no mínimo 5 caracteres.");
+      return;
     } else if (password != confirmPassword) {
       _showError("As senhas não coincidem.");
-    } else {
+      return;
+    }
+
+    final result = await RegisterService.register(
+      usuario: _usernameController.text,
+      nomeusuario: _usernameController.text,
+      telefone: _telefoneController.text,
+      email: _emailController.text,
+      login: _loginController.text,
+      senha: password,
+    );
+
+    if (result['success']) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Cadastro realizado com sucesso")),
+        SnackBar(content: Text(result['message'])),
       );
-      Navigator.pop(context); // Volta para a tela de login
+      Navigator.pop(context);
+    } else {
+      _showError(result['message']);
     }
   }
 
@@ -73,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            width: 300, // largura menor como na tela de login
+            width: 300,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
@@ -84,8 +102,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextField(
+                  controller: _loginController,
+                  decoration: _inputDecoration("Login"),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 16),
+                TextField(
                   controller: _emailController,
                   decoration: _inputDecoration("E-mail"),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: _telefoneController,
+                  decoration: _inputDecoration("Telefone"),
+                  keyboardType: TextInputType.phone,
                   style: const TextStyle(color: Colors.white),
                 ),
                 const SizedBox(height: 16),
