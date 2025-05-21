@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BluetoothScreen()),
+                  MaterialPageRoute(builder: (context) => BluetoothDevicesScreen()),
                 );
               },
               style: ElevatedButton.styleFrom(

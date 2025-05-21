@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authroutes');
 const logRoutes = require('./routes/logroutes');
 const cors = require('cors');
 
+//usando o cors
 app.use(cors());
 
 app.use(express.json());

@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => BluetoothScreen()), //chamada da classe bluetoothscreen
+              MaterialPageRoute(builder: (context) =>  BluetoothDevicesScreen()), //chamada da classe bluetoothscreen
             );
           },
           //personalizacao do botao do bluetooth
