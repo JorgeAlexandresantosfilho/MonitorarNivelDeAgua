@@ -8,13 +8,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -23,12 +20,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 32),
             const CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage(
-                'assets/profile.jpg',
-              ),
+              backgroundImage: AssetImage('assets/profile.jpg'),
             ),
             const SizedBox(height: 16),
-            // Substitua pelos dados reais do usuário
             const Text(
               'Nome do Usuário',
               style: TextStyle(
@@ -40,7 +34,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 8),
             const Text(
               'usuario@email.com',
-              style: TextStyle(color: Colors.white70, fontSize: 16),
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 16,
+              ),
             ),
             const SizedBox(height: 32),
             ElevatedButton.icon(
@@ -84,10 +81,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     );
   }
 }
