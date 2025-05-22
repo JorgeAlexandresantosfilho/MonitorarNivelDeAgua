@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'editprofile_screen.dart';
+<<<<<<< HEAD
 import 'login_screen.dart';
 import 'alterpass_screen.dart';
+=======
+import 'login_screen.dart'; // ← Importe sua tela de login
+>>>>>>> 879424d3ee9a3767be453146f298fa665df6699c
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -59,34 +63,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 8),
             const Text(
               'usuario@email.com',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 16,
-              ),
+              style: TextStyle(color: Colors.white70, fontSize: 16),
             ),
             const SizedBox(height: 32),
             ElevatedButton.icon(
               onPressed: _navigateToEditProfile,
               icon: const Icon(Icons.edit),
               label: const Text('Editar Perfil'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
-                foregroundColor: Colors.white,
-                minimumSize: const Size(double.infinity, 48),
-              ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EsqueceuSenhaScreen(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.lock),
-              label: const Text('Alterar Senha'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepPurple,
                 foregroundColor: Colors.white,
