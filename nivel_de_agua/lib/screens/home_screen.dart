@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                   height: 80, // Define a altura maior.
                   color: Colors.deepPurple, // Cor de fundo do botão.
                   child: Image.asset(
-                    'assets/profile.jpg',
+                    'assets/profile.png',
                     fit: BoxFit.cover,
                   ),
                 ),

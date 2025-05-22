@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'editprofile_screen.dart';
-import 'login_screen.dart'; // ← Importe sua tela de login
+import 'login_screen.dart';
 import 'alterpass_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -11,8 +11,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-<<<<<<< HEAD
-=======
   void _navigateToEditProfile() {
     Navigator.push(
       context,
@@ -23,17 +21,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _logout() {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => const LoginScreen()),
-      (route) => false, // Remove todas as rotas anteriores
+      (route) => false,
     );
   }
 
->>>>>>> b5f5152064794db119f9eff7d307ba9696d0324c
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-<<<<<<< HEAD
-=======
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
@@ -42,7 +37,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
->>>>>>> b5f5152064794db119f9eff7d307ba9696d0324c
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -51,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 32),
             const CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage('assets/profile.jpg'),
+              backgroundImage: AssetImage('assets/profile.png'),
             ),
             const SizedBox(height: 16),
             const Text(
@@ -104,24 +98,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder:
-                      (context) => AlertDialog(
-                        title: const Text('Sair'),
-                        content: const Text('Deseja realmente sair?'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text('Cancelar'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context); // Fecha o diálogo
-                              _logout(); // Vai pra tela de login
-                            },
-                            child: const Text('Sair'),
-                          ),
-                        ],
+                  builder: (context) => AlertDialog(
+                    title: const Text('Sair'),
+                    content: const Text('Deseja realmente sair?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancelar'),
                       ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context); // Fecha o diálogo
+                          _logout(); // Vai pra tela de login
+                        },
+                        child: const Text('Sair'),
+                      ),
+                    ],
+                  ),
                 );
               },
               icon: const Icon(Icons.logout),

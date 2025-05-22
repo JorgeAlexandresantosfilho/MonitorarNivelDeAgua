@@ -20,8 +20,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _register() {
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
-    // Funcionalidade da caixa de senha
-    if (password.length < 5 || confirmPassword.length < 5) {
+    final email = _emailController.text;
+
+    if (_usernameController.text.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
+      _showError("Preencha todos os campos.");
+    } else if (!email.contains('@') || !email.contains('.') || email.length < 5) {
+      _showError("E-mail inválido.");
+    } else if (password.length < 5 || confirmPassword.length < 5) {
       _showError("A senha deve ter no mínimo 5 caracteres.");
     } else if (password != confirmPassword) {
       _showError("As senhas não coincidem.");
@@ -36,17 +44,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _showError(String message) {
     showDialog(
       context: context,
-      builder:
-          (_) => AlertDialog(
-            title: const Text("Erro"),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("OK"),
-              ),
-            ],
+      builder: (_) => AlertDialog(
+        title: const Text("Erro"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
           ),
+        ],
+      ),
     );
   }
 
@@ -78,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            width: 300, // largura menor como na tela de login
+            width: 300,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
@@ -90,24 +97,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                TextField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(labelText: 'E-mail'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Campo obrigatório';
-                    }
-                    if (!value.contains('@') ||
-                        !value.contains('.') ||
-                        value.length < 5) {
-                      return 'E-mail inválido';
-                    }
-                    return null;
-                  },
+                  decoration: _inputDecoration("E-mail"),
                   style: const TextStyle(color: Colors.white),
                   textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                  onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                 ),
                 const SizedBox(height: 16),
                 TextField(
