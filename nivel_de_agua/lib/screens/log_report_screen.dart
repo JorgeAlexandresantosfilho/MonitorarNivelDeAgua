@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
+import '../models/log_model.dart';
+import '../services/log_service.dart';
 
 class LogReportScreen extends StatefulWidget {
   const LogReportScreen({super.key});
@@ -12,7 +10,7 @@ class LogReportScreen extends StatefulWidget {
 }
 
 class _LogReportScreenState extends State<LogReportScreen> {
-  List<dynamic> logs = [];
+  List<LogModel> logs = [];
   bool loading = true;
 
   @override
@@ -22,36 +20,17 @@ class _LogReportScreenState extends State<LogReportScreen> {
   }
 
   Future<void> _fetchLogs() async {
-    final prefs = await SharedPreferences.getInstance();
-    final loginUsuario = prefs.getString('login');
-
-    final url = Uri.parse(
-        'https://backendprojetouninassau-production.up.railway.app/api/logs');
-
     try {
-      final response = await http.get(url);
-
-      if (response.statusCode == 200) {
-        final allLogs = jsonDecode(response.body) as List<dynamic>;
-        final userLogs = allLogs
-            .where((log) => log['login_usuario'] == loginUsuario)
-            .toList();
-
-        setState(() {
-          logs = userLogs;
-          loading = false;
-        });
-      } else {
-        setState(() {
-          loading = false;
-        });
-        _showError('Erro ao buscar logs');
-      }
+      final fetchedLogs = await LogService.getLogs();
+      setState(() {
+        logs = fetchedLogs;
+        loading = false;
+      });
     } catch (e) {
       setState(() {
         loading = false;
       });
-      _showError('Erro de conexão: $e');
+      _showError('Erro ao buscar logs: $e');
     }
   }
 
@@ -72,29 +51,37 @@ class _LogReportScreenState extends State<LogReportScreen> {
   }
 
   String formatarData(String? data) {
-    if (data == null) return 'Sem data';
+    if (data == null || data.isEmpty) return 'Sem data';
     try {
       final dateTime = DateTime.parse(data).toLocal();
-      return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+      return '${dateTime.day.toString().padLeft(2,'0')}/'
+          '${dateTime.month.toString().padLeft(2,'0')}/'
+          '${dateTime.year} '
+          '${dateTime.hour.toString().padLeft(2,'0')}:'
+          '${dateTime.minute.toString().padLeft(2,'0')}';
     } catch (e) {
       return 'Sem data';
     }
   }
 
-  Widget _buildLogItem(Map<String, dynamic> log) {
+  Widget _buildLogItem(LogModel log) {
     return Card(
       color: Colors.deepPurple.shade100,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       child: ListTile(
-        title: Text('Ação: ${log['tpacao'] ?? 'Desconhecida'}'),
+        title: Text('Ação: ${log.tpacao}'),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Data: ${formatarData(log['datacao'])}'),
-            if (log['dsregold'] != null && log['dsregnew'] != null)
-              Text('Descrição: ${log['dsregold']} ➡ ${log['dsregnew']}'),
-            if (log['nomeusuarioold'] != null && log['nomeusuarionew'] != null)
-              Text('Usuário: ${log['nomeusuarioold']} ➡ ${log['nomeusuarionew']}'),
+            Text('Login Usuário: ${log.loginusuario}'),
+            Text('Data: ${formatarData(log.datacao)}'),
+            Text('ID Registro: ${log.idregistro ?? "N/A"}'),
+            Text('Descrição antiga: ${log.dsregold ?? "N/A"}'),
+            Text('Descrição nova: ${log.dsregnew ?? "N/A"}'),
+            Text('Tipo Ação antiga: ${log.tpacaoregold ?? "N/A"}'),
+            Text('Tipo Ação nova: ${log.tpacaoregnew ?? "N/A"}'),
+            Text('Nome usuário antigo: ${log.nomeusuarioold ?? "N/A"}'),
+            Text('Nome usuário novo: ${log.nomeusuarionew ?? "N/A"}'),
           ],
         ),
       ),

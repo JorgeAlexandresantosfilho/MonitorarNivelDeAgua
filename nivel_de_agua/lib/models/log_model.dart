@@ -1,7 +1,7 @@
 class LogModel {
   final String tpacao;
   final String loginusuario;
-  final String datacao;
+  final String datacao; 
   final String? idregistro;
   final String? dsregold;
   final String? dsregnew;
@@ -26,13 +26,13 @@ class LogModel {
   factory LogModel.fromJson(Map<String, dynamic> json) {
     return LogModel(
       tpacao: json['tpacao'] ?? '',
-      loginusuario: json['loginusuario'] ?? '',
-      datacao: json['datacao'] ?? '',
-      idregistro: json['idregistro'],
+      loginusuario: json['login_usuario'] ?? '',
+      datacao: json['dataacao'] ?? '',
+      idregistro: json['id_registro']?.toString(),
       dsregold: json['dsregold'],
       dsregnew: json['dsregnew'],
-      tpacaoregold: json['tpacaoregold'],
-      tpacaoregnew: json['tpacaoregnew'],
+      tpacaoregold: json['tpacaogold'], 
+      tpacaoregnew: json['tpacaornew'],  
       nomeusuarioold: json['nomeusuarioold'],
       nomeusuarionew: json['nomeusuarionew'],
     );

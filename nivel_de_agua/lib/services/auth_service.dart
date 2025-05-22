@@ -24,7 +24,7 @@ class AuthService {
     }
   }
 }
-//a funcao abaixo vai guardar os dados do usuario usando sharedpreferences
+//a funcao pra guardar os dados do usuario usando sharedpreferences 
 Future<void> saveUserData(Map<String, dynamic> userData) async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setInt('id', userData['id']);

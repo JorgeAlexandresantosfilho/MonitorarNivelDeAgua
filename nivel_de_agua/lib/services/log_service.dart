@@ -3,9 +3,9 @@ import 'package:http/http.dart' as http;
 import '../models/log_model.dart';
 
 class LogService {
-  static Future<List<LogModel>> getLogsByLogin(String login) async {
+  static Future<List<LogModel>> getLogs() async {
     final response = await http.get(
-      Uri.parse('https://backendprojetouninassau-production.up.railway.app/monitoapi/log/usuario/$login'),
+      Uri.parse('https://backendprojetouninassau-production.up.railway.app/api/logs'),
     );
 
     if (response.statusCode == 200) {
