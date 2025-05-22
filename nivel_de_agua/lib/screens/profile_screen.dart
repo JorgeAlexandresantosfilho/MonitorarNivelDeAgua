@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'editprofile_screen.dart';
+import 'login_screen.dart'; // ← Importe sua tela de login
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -8,7 +10,20 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  
+  void _navigateToEditProfile() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const EditProfileScreen()),
+    );
+  }
+
+  void _logout() {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      (route) => false, // Remove todas as rotas anteriores
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,12 +40,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 32),
             const CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage(
-                'assets/profile.jpg',
-              ),
+              backgroundImage: AssetImage('assets/profile.jpg'),
             ),
             const SizedBox(height: 16),
-            // Substitua pelos dados reais do usuário
             const Text(
               'Nome do Usuário',
               style: TextStyle(
@@ -46,9 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 32),
             ElevatedButton.icon(
-              onPressed: () {
-                // TODO: Implementar lógica de edição de perfil
-              },
+              onPressed: _navigateToEditProfile,
               icon: const Icon(Icons.edit),
               label: const Text('Editar Perfil'),
               style: ElevatedButton.styleFrom(
@@ -60,7 +70,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
-                // TODO: Implementar lógica de alteração de senha
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Alterar Senha'),
+                    content: const Text('Funcionalidade em desenvolvimento.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
               },
               icon: const Icon(Icons.lock),
               label: const Text('Alterar Senha'),
@@ -73,7 +95,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
-                // TODO: Implementar lógica de logout
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Sair'),
+                    content: const Text('Deseja realmente sair?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancelar'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context); // Fecha o diálogo
+                          _logout(); // Vai pra tela de login
+                        },
+                        child: const Text('Sair'),
+                      ),
+                    ],
+                  ),
+                );
               },
               icon: const Icon(Icons.logout),
               label: const Text('Sair'),

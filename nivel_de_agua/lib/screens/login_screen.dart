@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'register_screen.dart';
-import 'alterpass_screen.dart'; 
+import 'alterpass_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,26 +28,27 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       showDialog(
         context: context,
-        builder: (_) => AlertDialog(
-          title: const Text("Erro"),
-          content: const Text("Usuário ou senha inválidos"),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("OK"),
+        builder:
+            (_) => AlertDialog(
+              title: const Text("Erro"),
+              content: const Text("Usuário ou senha inválidos"),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("OK"),
+                ),
+              ],
             ),
-          ],
-        ),
       );
     }
   }
 
   void _navigateToAlterPass() {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const AlterPassScreen()),
-  );
-}
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const EsqueceuSenhaScreen()),
+    );
+  }
 
   // Navega para a tela de registro
   void _navigateToRegister() {
@@ -60,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-// Limpa os campos de texto
+  // Limpa os campos de texto
   @override
   Widget build(BuildContext context) {
     return Scaffold(
