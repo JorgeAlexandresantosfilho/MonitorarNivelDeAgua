@@ -3,7 +3,7 @@ import 'editprofile_screen.dart';
 import 'login_screen.dart';
 import 'alterpass_screen.dart';
 import 'login_screen.dart'; // ← Importe sua tela de login
-import 'alterpass_screen.dart'; // ← Importe sua tela de alterar senha
+import 'editpass_screen.dart'; // ← Importe sua tela de alterar senha
 
 
 class ProfileScreen extends StatefulWidget {
@@ -81,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const EsqueceuSenhaScreen(),
+                    builder: (context) => const EditPassScreen(),
                   ),
                 );
               },
