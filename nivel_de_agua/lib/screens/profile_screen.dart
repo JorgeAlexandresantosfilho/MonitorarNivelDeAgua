@@ -14,6 +14,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -83,6 +84,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     );
