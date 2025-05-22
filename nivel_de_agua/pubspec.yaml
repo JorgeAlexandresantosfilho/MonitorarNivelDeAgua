@@ -29,6 +29,6 @@ flutter:
 
 
   assets:
-    - assets/profile.jpg
+    - assets/profile.png
     - assets/logo.png
     - assets/animations/loadinganimation.json

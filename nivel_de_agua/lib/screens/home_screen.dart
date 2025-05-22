@@ -30,20 +30,18 @@ class HomeScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepPurple,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.all(
-                  40,
-                ), // Aumenta o tamanho do botão.
+                padding: const EdgeInsets.all(40), // Aumenta o tamanho do botão.
                 shape: const CircleBorder(), // Define o botão como circular.
               ),
               child: const Icon(
                 Icons.bluetooth,
-                size: 50, // Aumenta o tamanho do ícone.
+                size: 30, // tamanho do ícone.
               ),
             ),
           ),
-          // Botão superior direito com a logo
+          // Botão superior direito
           Positioned(
-            top: 40, // Define a posição um pouco abaixo do topo.
+            top: 28, // Define a posição um pouco abaixo do topo.
             right: 20, // Define a margem à direita.
             child: GestureDetector(
               onTap: () {
@@ -56,10 +54,13 @@ class HomeScreen extends StatelessWidget {
               },
               child: ClipOval(
                 child: Container(
-                  width: 100, // Define a largura maior.
-                  height: 100, // Define a altura maior.
+                  width: 80, // Define a largura maior.
+                  height: 80, // Define a altura maior.
                   color: Colors.deepPurple, // Cor de fundo do botão.
-                  child: Image.asset('assets/profile.jpg', fit: BoxFit.cover),
+                  child: Image.asset(
+                    'assets/profile.jpg',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
