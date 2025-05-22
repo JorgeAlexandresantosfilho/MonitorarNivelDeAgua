@@ -99,10 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 16),
                 TextField(
                   controller: _emailController,
-<<<<<<< HEAD
                   keyboardType: TextInputType.emailAddress,
-=======
->>>>>>> 879424d3ee9a3767be453146f298fa665df6699c
                   decoration: _inputDecoration("E-mail"),
                   style: const TextStyle(color: Colors.white),
                   textInputAction: TextInputAction.next,
