@@ -13,15 +13,15 @@ class SplashScreen extends StatelessWidget {
         children: [
           Center(
             child: Lottie.asset(
-              "assets/animations/loadinganimation.json", // Caminho da animação na assets
+              "assets/animations/loadinganimation.json",
             ),
           ),
         ],
       ),
-      nextScreen: const LoginScreen(), // Tela que vem após o splash
-      splashIconSize: 400, // Tamanho do ícone do splash
-      backgroundColor: Colors.black, // Cor de fundo
-      duration: 3000, // Duração em milissegundos
+      nextScreen: const LoginScreen(), 
+      splashIconSize: 400, 
+      backgroundColor: Colors.black, 
+      duration: 3000, 
     );
   }
 }

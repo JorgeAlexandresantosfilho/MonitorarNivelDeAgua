@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'log_report_screen.dart';
+import 'edit_profile_screen.dart';  
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -12,76 +14,57 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final TextEditingController _usuarioController = TextEditingController();
-  final TextEditingController _nomeController = TextEditingController();
-  final TextEditingController _telefoneController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _loginController = TextEditingController();
-  final TextEditingController _senhaController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
 
-  int? userId;
+  String? _imagePath;
+  String _nomeUsuario = '';
+  int? _userId;
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
+    _loadImagePath();
   }
 
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      userId = prefs.getInt('id');
-      _nomeController.text = prefs.getString('nomeusuario') ?? '';
-      _loginController.text = prefs.getString('login') ?? '';
-      _emailController.text = prefs.getString('email') ?? '';
+      _userId = prefs.getInt('id');
+      _nomeUsuario = prefs.getString('nomeusuario') ?? '';
     });
   }
 
-  Future<void> _updateUser() async {
-    if (userId == null) return;
-
-    final url = Uri.parse('https://backendprojetouninassau-production.up.railway.app/monitoapi/usuarios/$userId');
-    final body = jsonEncode({
-      "usuario": _usuarioController.text,
-      "nomeusuario": _nomeController.text,
-      "telefone": _telefoneController.text,
-      "email": _emailController.text,
-      "login": _loginController.text,
-      "senha": _senhaController.text,
+  Future<void> _loadImagePath() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _imagePath = prefs.getString('profile_image_path_${_userId ?? 0}');
     });
+  }
 
-    try {
-      final response = await http.put(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: body,
-      );
+  Future<void> _pickImage() async {
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
-      if (response.statusCode == 200) {
-        _showDialog('Sucesso', 'Dados atualizados com sucesso!');
-      } else {
-        final data = jsonDecode(response.body);
-        _showDialog('Erro', data['message'] ?? 'Erro ao atualizar dados');
-      }
-    } catch (e) {
-      _showDialog('Erro', 'Falha na conexão: $e');
+    if (pickedFile == null) return;
+
+    final appDir = await getApplicationDocumentsDirectory();
+
+  
+    final profileImagesDir = Directory('${appDir.path}/profile_images');
+    if (!profileImagesDir.existsSync()) {
+      profileImagesDir.createSync();
     }
-  }
 
-  void _showDialog(String title, String message) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+   
+    final fileName = 'profile_${_userId ?? 'default'}.png';
+    final savedImage = await File(pickedFile.path).copy('${profileImagesDir.path}/$fileName');
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('profile_image_path_${_userId ?? 0}', savedImage.path);
+
+    setState(() {
+      _imagePath = savedImage.path;
+    });
   }
 
   @override
@@ -97,31 +80,81 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
-            _buildTextField(_usuarioController, 'Usuário'),
-            _buildTextField(_nomeController, 'Nome do Usuário'),
-            _buildTextField(_telefoneController, 'Telefone'),
-            _buildTextField(_emailController, 'E-mail'),
-            _buildTextField(_loginController, 'Login'),
-            _buildTextField(_senhaController, 'Senha', obscure: true),
+            Center(
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundColor: Colors.deepPurple,
+                    backgroundImage:
+                        _imagePath != null ? FileImage(File(_imagePath!)) : null,
+                    child: _imagePath == null
+                        ? const Icon(Icons.person, size: 60, color: Colors.white)
+                        : null,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: _pickImage,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurple,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: const Icon(Icons.camera_alt, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 20),
+            Center(
+              child: Text(
+                _nomeUsuario,
+                style: const TextStyle(
+                  fontSize: 24,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+
+            
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepPurple,
                 foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 14),
               ),
-              onPressed: _updateUser,
-              child: const Text('Salvar Alterações'),
+              onPressed: () async {
+                
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => EditProfileScreen()),
+                );
+                
+                if (result == true) {
+                  _loadUserData();
+                }
+              },
+              child: const Text('Alterar Dados'),
             ),
             const SizedBox(height: 10),
+
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.grey,
                 foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 14),
               ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const LogReportScreen())
+                  MaterialPageRoute(builder: (_) => const LogReportScreen()),
                 );
               },
               child: const Text('Ver Relatório de Logs'),
@@ -131,33 +164,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
-  Widget _buildTextField(TextEditingController controller, String label, {bool obscure = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextField(
-        controller: controller,
-        obscureText: obscure,
-        style: const TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: const TextStyle(color: Colors.white),
-          filled: true,
-          fillColor: Colors.black,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.deepPurple),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.deepPurple),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.deepPurple),
-          ),
-        ),
-      ),
-    );
-  }
-} 
+}
