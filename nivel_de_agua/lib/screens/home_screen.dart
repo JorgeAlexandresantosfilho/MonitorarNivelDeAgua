@@ -9,7 +9,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(0), // Remove a barra padrão da AppBar.
+        preferredSize: const Size.fromHeight(
+          0,
+        ), // Remove a barra padrão da AppBar.
         child: SizedBox.shrink(),
       ),
       body: Stack(
@@ -20,13 +22,15 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const BluetoothScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => const NovaBluetoothScreen(),
+                  ),
                 );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepPurple,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.all(30), // Aumenta o tamanho do botão.
+                padding: const EdgeInsets.all(40), // Aumenta o tamanho do botão.
                 shape: const CircleBorder(), // Define o botão como circular.
               ),
               child: const Icon(
@@ -43,7 +47,9 @@ class HomeScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => const ProfileScreen(),
+                  ),
                 );
               },
               child: ClipOval(
@@ -52,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                   height: 80, // Define a altura maior.
                   color: Colors.deepPurple, // Cor de fundo do botão.
                   child: Image.asset(
-                    'assets/profile.png',
+                    'assets/profile.jpg',
                     fit: BoxFit.cover,
                   ),
                 ),
