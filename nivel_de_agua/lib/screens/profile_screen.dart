@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'editprofile_screen.dart';
 import 'login_screen.dart'; // ← Importe sua tela de login
-import 'alterpass_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
