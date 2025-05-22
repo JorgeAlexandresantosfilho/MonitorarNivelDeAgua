@@ -11,8 +11,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-<<<<<<< HEAD
-=======
   void _navigateToEditProfile() {
     Navigator.push(
       context,
@@ -27,13 +25,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
->>>>>>> b5f5152064794db119f9eff7d307ba9696d0324c
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-<<<<<<< HEAD
-=======
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
@@ -42,7 +37,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
->>>>>>> b5f5152064794db119f9eff7d307ba9696d0324c
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -51,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 32),
             const CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage('assets/profile.jpg'),
+              backgroundImage: AssetImage('assets/profile.png'),
             ),
             const SizedBox(height: 16),
             const Text(
@@ -65,34 +59,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 8),
             const Text(
               'usuario@email.com',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 16,
-              ),
+              style: TextStyle(color: Colors.white70, fontSize: 16),
             ),
             const SizedBox(height: 32),
             ElevatedButton.icon(
               onPressed: _navigateToEditProfile,
               icon: const Icon(Icons.edit),
               label: const Text('Editar Perfil'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
-                foregroundColor: Colors.white,
-                minimumSize: const Size(double.infinity, 48),
-              ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EsqueceuSenhaScreen(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.lock),
-              label: const Text('Alterar Senha'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepPurple,
                 foregroundColor: Colors.white,

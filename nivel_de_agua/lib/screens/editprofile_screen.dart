@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'alterpass_screen.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -125,40 +124,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               decoration: _inputDecoration('Nome de Usuário'),
             ),
             const SizedBox(height: 16),
-            TextFormField(
+            TextField(
               controller: _currentEmailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: 'Email Atual'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Campo obrigatório';
-                }
-                if (!value.contains('@') ||
-                    !value.contains('.') ||
-                    value.length < 5) {
-                  return 'E-mail inválido';
-                }
-                return null;
-              },
+              decoration: _inputDecoration('Email Atual'),
+              style: const TextStyle(color: Colors.white),
+              textInputAction: TextInputAction.next,
             ),
             const SizedBox(height: 16),
-            TextFormField(
+            TextField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: 'Email'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Campo obrigatório';
-                }
-                if (!value.contains('@') ||
-                    !value.contains('.') ||
-                    value.length < 5) {
-                  return 'E-mail inválido';
-                }
-                return null;
-              },
+              decoration: _inputDecoration('Email'),
+              style: const TextStyle(color: Colors.white),
               textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) => _saveChanges(),
+              onSubmitted: (_) => _saveChanges(),
             ),
             const SizedBox(height: 32),
             ElevatedButton(
@@ -169,23 +149,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 minimumSize: const Size(double.infinity, 48),
               ),
               child: const Text('Salvar Alterações'),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const EsqueceuSenhaScreen(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[800],
-                foregroundColor: Colors.white,
-                minimumSize: const Size(double.infinity, 48),
-              ),
-              child: const Text('Alterar Senha'),
             ),
           ],
         ),
