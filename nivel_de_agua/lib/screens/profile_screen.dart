@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'editprofile_screen.dart';
 import 'login_screen.dart'; // ← Importe sua tela de login
+import 'alterpass_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -28,7 +29,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-<<<<<<< Updated upstream
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -67,17 +75,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Alterar Senha'),
-                    content: const Text('Funcionalidade em desenvolvimento.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('OK'),
-                      ),
-                    ],
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EsqueceuSenhaScreen(),
                   ),
                 );
               },
@@ -94,23 +95,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Sair'),
-                    content: const Text('Deseja realmente sair?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Cancelar'),
+                  builder:
+                      (context) => AlertDialog(
+                        title: const Text('Sair'),
+                        content: const Text('Deseja realmente sair?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancelar'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Fecha o diálogo
+                              _logout(); // Vai pra tela de login
+                            },
+                            child: const Text('Sair'),
+                          ),
+                        ],
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context); // Fecha o diálogo
-                          _logout(); // Vai pra tela de login
-                        },
-                        child: const Text('Sair'),
-                      ),
-                    ],
-                  ),
                 );
               },
               icon: const Icon(Icons.logout),
@@ -124,8 +126,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-=======
->>>>>>> Stashed changes
     );
   }
 }

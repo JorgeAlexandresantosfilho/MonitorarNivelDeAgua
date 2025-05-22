@@ -90,12 +90,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                 ),
                 const SizedBox(height: 16),
-                TextField(
+                TextFormField(
                   controller: _emailController,
-                  decoration: _inputDecoration("E-mail"),
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(labelText: 'E-mail'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Campo obrigatório';
+                    }
+                    if (!value.contains('@') ||
+                        !value.contains('.') ||
+                        value.length < 5) {
+                      return 'E-mail inválido';
+                    }
+                    return null;
+                  },
                   style: const TextStyle(color: Colors.white),
                   textInputAction: TextInputAction.next,
-                  onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                  onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
                 ),
                 const SizedBox(height: 16),
                 TextField(

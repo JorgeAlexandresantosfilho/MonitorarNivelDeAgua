@@ -89,7 +89,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   backgroundImage:
                       _profileImage != null
                           ? FileImage(_profileImage!)
-                          : const AssetImage('assets/profile.jpg')
+                          : const AssetImage('assets/profile.png')
                               as ImageProvider,
                 ),
                 Positioned(
@@ -125,19 +125,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               decoration: _inputDecoration('Nome de Usuário'),
             ),
             const SizedBox(height: 16),
-            TextField(
+            TextFormField(
               controller: _currentEmailController,
-              style: const TextStyle(color: Colors.white),
-              textInputAction: TextInputAction.next,
-              decoration: _inputDecoration('Email Atual'),
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(labelText: 'Email Atual'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Campo obrigatório';
+                }
+                if (!value.contains('@') ||
+                    !value.contains('.') ||
+                    value.length < 5) {
+                  return 'E-mail inválido';
+                }
+                return null;
+              },
             ),
             const SizedBox(height: 16),
-            TextField(
+            TextFormField(
               controller: _emailController,
-              style: const TextStyle(color: Colors.white),
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(labelText: 'Email'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Campo obrigatório';
+                }
+                if (!value.contains('@') ||
+                    !value.contains('.') ||
+                    value.length < 5) {
+                  return 'E-mail inválido';
+                }
+                return null;
+              },
               textInputAction: TextInputAction.done,
-              onSubmitted: (_) => _saveChanges(),
-              decoration: _inputDecoration('Email'),
+              onFieldSubmitted: (_) => _saveChanges(),
             ),
             const SizedBox(height: 32),
             ElevatedButton(

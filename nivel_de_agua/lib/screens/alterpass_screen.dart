@@ -14,14 +14,19 @@ class _EsqueceuSenhaScreenState extends State<EsqueceuSenhaScreen> {
 
   void _recuperarSenha() {
     if (_formKey.currentState!.validate()) {
-      // Aqui simularia envio de email
-      showDialog(
-        context: context,
-        builder: (_) => const AlertDialog(
-          title: Text('Recuperação de Senha'),
-          content: Text('Se o e-mail estiver correto, você receberá instruções.'),
-        ),
-      );
+      {
+        // Aqui simularia envio de email
+        showDialog(
+          context: context,
+          builder:
+              (_) => const AlertDialog(
+                title: Text('Recuperação de Senha'),
+                content: Text(
+                  'Se o e-mail estiver correto, você receberá instruções.',
+                ),
+              ),
+        );
+      }
     }
   }
 
@@ -42,8 +47,14 @@ class _EsqueceuSenhaScreenState extends State<EsqueceuSenhaScreen> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(labelText: 'E-mail'),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Campo obrigatório';
-                  if (!value.contains('@')) return 'E-mail inválido';
+                  if (value == null || value.isEmpty) {
+                    return 'Campo obrigatório';
+                  }
+                  if (!value.contains('@') ||
+                      !value.contains('.') ||
+                      value.length < 5) {
+                    return 'E-mail inválido';
+                  }
                   return null;
                 },
               ),
