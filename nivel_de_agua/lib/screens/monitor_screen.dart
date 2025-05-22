@@ -18,7 +18,7 @@ class _MonitoramentoScreenState extends State<MonitoramentoScreen> {
   Future<void> conectarDispositivo() async {
     try {
       BluetoothDevice? hc05 = (await FlutterBluetoothSerial.instance.getBondedDevices())
-          .firstWhere((device) => device.name == "HC-05", orElse: () => throw Exception("HC-05 não pareado"));
+          .firstWhere((device) => device.name == "Wl_hc_05", orElse: () => throw Exception("HC-05 não pareado"));
 
       await BluetoothConnection.toAddress(hc05.address).then((_connection) {
         connection = _connection;
@@ -66,7 +66,7 @@ class _MonitoramentoScreenState extends State<MonitoramentoScreen> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       print("Registro enviado com sucesso!");
     } else {
-      print("Erro ao enviar para backend: ${response.body}");
+      print("Erro ao enviar para backend: ${response.statusCode} - ${response.body}");
     }
   }
 
