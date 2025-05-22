@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(width: 16),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: const Color(0xFF673AB7),
                       foregroundColor: Colors.white,
                       textStyle: const TextStyle(fontWeight: FontWeight.bold),
                       shape: RoundedRectangleBorder(
