@@ -1,4 +1,4 @@
-//guardando as informacoes (organizandokk)
+//guardando as informacoes
 class UserModel {
   final String usuario;
   final String nomeusuario;
