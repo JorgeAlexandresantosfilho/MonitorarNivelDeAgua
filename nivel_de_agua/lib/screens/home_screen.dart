@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'bluetoothdiscoveryscreen.dart';
 import 'profile_screen.dart';
 import 'monitor_screen.dart';  
+import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -15,7 +16,6 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-
           Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -51,6 +51,23 @@ class HomeScreen extends StatelessWidget {
                   label: const Text("Monitorar Nível de Água"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueAccent,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.logout),
+                  label: const Text("Sair"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.redAccent,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   ),
                 ),
