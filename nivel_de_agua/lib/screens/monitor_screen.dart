@@ -53,12 +53,12 @@ class _MonitoramentoScreenState extends State<MonitoramentoScreen> {
   }
 
   Future<void> enviarParaBackend(double valor) async {
-    final url = Uri.parse("https://backendprojetouninassau-production.up.railway.app/monitoapi/registro");
+    final url = Uri.parse("https://backendprojetouninassau-production.up.railway.app/monitoapi/registros");
     try {
       final response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"nivelagua": valor}),
+        body: jsonEncode({"nivel_agua": valor}),
       );
       print("Enviado ao backend: ${response.statusCode}");
     } catch (e) {
