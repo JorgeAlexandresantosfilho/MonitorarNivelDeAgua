@@ -10,7 +10,6 @@ class BluetoothDiscoveryScreen extends StatefulWidget {
 
 class _BluetoothDiscoveryScreenState extends State<BluetoothDiscoveryScreen> {
   List<BluetoothDevice> devices = [];
-//aqui pedimos a permissao do bluetooth e tambem trazemos os resultados
   @override
   void initState() {
     super.initState();

@@ -1,6 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 
 class BluetoothTerminalScreen extends StatefulWidget {
   final BluetoothDevice device;
@@ -27,13 +29,25 @@ class _BluetoothTerminalScreenState extends State<BluetoothTerminalScreen> {
     try {
       connection = await BluetoothConnection.toAddress(widget.device.address);
       setState(() => isConnected = true);
+      print("Conectado com sucesso!");
 
       connection!.input!.listen((data) {
-        final message = String.fromCharCodes(data).trim();
+        final message = utf8.decode(data).trim();
+        print("Mensagem recebida: $message");
+
         setState(() => messages.add('Arduino: $message'));
+
+      
+        final match = RegExp(r'(\d+(\.\d+)?)').firstMatch(message);
+        if (match != null) {
+          double valor = double.parse(match.group(0)!);
+          print("Enviando para backend: $valor cm");
+          enviarParaBackend(valor);
+        }
       });
     } catch (e) {
       setState(() => messages.add('Erro ao conectar: $e'));
+      print("Erro ao conectar: $e");
     }
   }
 
@@ -43,6 +57,26 @@ class _BluetoothTerminalScreenState extends State<BluetoothTerminalScreen> {
       connection!.output.add(Uint8List.fromList(text.codeUnits));
       setState(() => messages.add('Você: $text'));
       messageController.clear();
+    }
+  }
+
+  Future<void> enviarParaBackend(double valor) async {
+    final url = Uri.parse("https://backendprojetouninassau-production.up.railway.app/monitoapi/registros");
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"nivel_agua": valor}),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("✅ Enviado ao backend com sucesso: $valor cm");
+      } else {
+        print("❌ Erro ao enviar. Código: ${response.statusCode}, Corpo: ${response.body}");
+      }
+    } catch (e) {
+      print("❌ Erro de conexão ao backend: $e");
     }
   }
 

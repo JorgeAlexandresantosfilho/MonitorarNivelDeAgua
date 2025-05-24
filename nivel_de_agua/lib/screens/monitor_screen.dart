@@ -1,29 +1,33 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class MonitoramentoScreen extends StatefulWidget {
-  const MonitoramentoScreen({Key? key}) : super(key: key);
-
   @override
-  State<MonitoramentoScreen> createState() => _MonitoramentoScreenState();
+  _MonitoramentoScreenState createState() => _MonitoramentoScreenState();
 }
 
 class _MonitoramentoScreenState extends State<MonitoramentoScreen> {
   BluetoothConnection? connection;
   bool isConnected = false;
-  String nivelAgua = "N/A";
+  String nivelAgua = "Desconhecido";
 
   Future<void> conectarDispositivo() async {
     try {
-      BluetoothDevice? hc05 = (await FlutterBluetoothSerial.instance.getBondedDevices())
-          .firstWhere((device) => device.name == "Wl_hc_05", orElse: () => throw Exception("HC-05 não pareado"));
+      List<BluetoothDevice> devices = await FlutterBluetoothSerial.instance.getBondedDevices();
+      BluetoothDevice? hc05 = devices.firstWhere(
+        (device) =>
+            device.name != null &&
+            device.name!.toLowerCase().contains("hc") &&
+            device.name!.contains("05"),
+        orElse: () => throw Exception("Nenhum módulo HC-05 pareado encontrado."),
+      );
 
       await BluetoothConnection.toAddress(hc05.address).then((_connection) {
         connection = _connection;
         setState(() => isConnected = true);
-        print("Conectado ao HC-05!");
+        print("Conectado ao ${hc05.name}!");
 
         connection!.input!.listen((data) {
           String recebidos = utf8.decode(data).trim();
@@ -42,61 +46,47 @@ class _MonitoramentoScreenState extends State<MonitoramentoScreen> {
       });
     } catch (e) {
       print("Erro ao conectar: $e");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Erro: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro: $e")),
+      );
     }
   }
 
-  void desconectar() {
-    connection?.dispose();
-    setState(() {
-      isConnected = false;
-      nivelAgua = "N/A";
-    });
-  }
-
-  Future<void> enviarParaBackend(double nivel) async {
-    final url = Uri.parse("https://backendprojetouninassau-production.up.railway.app/monitoapi/registros");
-
-    final response = await http.post(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"nivel_agua": nivel}),
-    );
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      print("Registro enviado com sucesso!");
-    } else {
-      print("Erro ao enviar para backend: ${response.statusCode} - ${response.body}");
+  Future<void> enviarParaBackend(double valor) async {
+    final url = Uri.parse("https://backendprojetouninassau-production.up.railway.app/monitoapi/registro");
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"nivelagua": valor}),
+      );
+      print("Enviado ao backend: ${response.statusCode}");
+    } catch (e) {
+      print("Erro ao enviar para backend: $e");
     }
   }
 
   @override
   void dispose() {
-    if (isConnected) connection?.dispose();
+    connection?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Monitoramento de Nível de Água")),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      appBar: AppBar(title: Text("Monitoramento")),
+      body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Nível atual da água:", style: TextStyle(fontSize: 18)),
+            Text("Nível da água:", style: TextStyle(fontSize: 20)),
             SizedBox(height: 10),
-            Text(nivelAgua, style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+            Text(nivelAgua, style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: isConnected ? null : conectarDispositivo,
               child: Text("Iniciar Monitoramento"),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: isConnected ? desconectar : null,
-              child: Text("Parar Monitoramento"),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             ),
           ],
         ),
