@@ -18,6 +18,7 @@ class _BluetoothTerminalScreenState extends State<BluetoothTerminalScreen> {
   List<String> messages = [];
   TextEditingController messageController = TextEditingController();
   bool isConnected = false;
+  bool isMonitoring = false;
 
   @override
   void initState() {
@@ -32,18 +33,25 @@ class _BluetoothTerminalScreenState extends State<BluetoothTerminalScreen> {
       print("Conectado com sucesso!");
 
       connection!.input!.listen((data) {
-        final message = utf8.decode(data).trim();
-        print("Mensagem recebida: $message");
+        if (isMonitoring) {
+          final message = utf8.decode(data).trim();
+          print("Mensagem recebida: $message");
 
-        setState(() => messages.add('Arduino: $message'));
+          setState(() => messages.add('Arduino: $message'));
 
-      
-        final match = RegExp(r'(\d+(\.\d+)?)').firstMatch(message);
-        if (match != null) {
-          double valor = double.parse(match.group(0)!);
-          print("Enviando para backend: $valor cm");
-          enviarParaBackend(valor);
+          final match = RegExp(r'(\d+(\.\d+)?)').firstMatch(message);
+          if (match != null) {
+            double valor = double.parse(match.group(0)!);
+            print("Enviando para backend: $valor cm");
+            enviarParaBackend(valor);
+          }
         }
+      }).onDone(() {
+        print("Conexão encerrada");
+        setState(() {
+          isConnected = false;
+          isMonitoring = false;
+        });
       });
     } catch (e) {
       setState(() => messages.add('Erro ao conectar: $e'));
@@ -80,6 +88,20 @@ class _BluetoothTerminalScreenState extends State<BluetoothTerminalScreen> {
     }
   }
 
+  void _startMonitoring() {
+    setState(() {
+      isMonitoring = true;
+      messages.add("🔄 Monitoramento iniciado.");
+    });
+  }
+
+  void _stopMonitoring() {
+    setState(() {
+      isMonitoring = false;
+      messages.add("⏹️ Monitoramento pausado.");
+    });
+  }
+
   @override
   void dispose() {
     connection?.dispose();
@@ -103,6 +125,24 @@ class _BluetoothTerminalScreenState extends State<BluetoothTerminalScreen> {
                   .toList(),
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton.icon(
+                onPressed: isConnected ? _startMonitoring : null,
+                icon: const Icon(Icons.play_arrow),
+                label: const Text("Iniciar"),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              ),
+              ElevatedButton.icon(
+                onPressed: isConnected ? _stopMonitoring : null,
+                icon: const Icon(Icons.stop),
+                label: const Text("Parar"),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
           Container(
             color: Colors.deepPurple.shade100,
             padding: const EdgeInsets.symmetric(horizontal: 10),
