@@ -30,24 +30,24 @@ class _BluetoothTerminalScreenState extends State<BluetoothTerminalScreen> {
     try {
       connection = await BluetoothConnection.toAddress(widget.device.address);
       setState(() => isConnected = true);
-      print("Conectado com sucesso!");
+      print("✅ Conectado com sucesso!");
 
       connection!.input!.listen((data) {
         if (isMonitoring) {
           final message = utf8.decode(data).trim();
-          print("Mensagem recebida: $message");
+          print("📥 Mensagem recebida: $message");
 
           setState(() => messages.add('Arduino: $message'));
 
           final match = RegExp(r'(\d+(\.\d+)?)').firstMatch(message);
           if (match != null) {
             double valor = double.parse(match.group(0)!);
-            print("Enviando para backend: $valor cm");
+            print("🌐 Enviando para backend: $valor cm");
             enviarParaBackend(valor);
           }
         }
       }).onDone(() {
-        print("Conexão encerrada");
+        print("⚠️ Conexão encerrada");
         setState(() {
           isConnected = false;
           isMonitoring = false;
@@ -55,14 +55,14 @@ class _BluetoothTerminalScreenState extends State<BluetoothTerminalScreen> {
       });
     } catch (e) {
       setState(() => messages.add('Erro ao conectar: $e'));
-      print("Erro ao conectar: $e");
+      print("❌ Erro ao conectar: $e");
     }
   }
 
   void _sendMessage() {
     final text = messageController.text.trim();
     if (text.isNotEmpty && connection != null && isConnected) {
-      connection!.output.add(Uint8List.fromList(text.codeUnits));
+      connection!.output.add(Uint8List.fromList((text + "\n").codeUnits));
       setState(() => messages.add('Você: $text'));
       messageController.clear();
     }
@@ -89,17 +89,27 @@ class _BluetoothTerminalScreenState extends State<BluetoothTerminalScreen> {
   }
 
   void _startMonitoring() {
-    setState(() {
-      isMonitoring = true;
-      messages.add("🔄 Monitoramento iniciado.");
-    });
+    if (connection != null && isConnected) {
+      connection!.output.add(utf8.encode("START\n"));
+      connection!.output.allSent.then((_) {
+        setState(() {
+          isMonitoring = true;
+          messages.add("🔄 Monitoramento iniciado.");
+        });
+      });
+    }
   }
 
   void _stopMonitoring() {
-    setState(() {
-      isMonitoring = false;
-      messages.add("⏹️ Monitoramento pausado.");
-    });
+    if (connection != null && isConnected) {
+      connection!.output.add(utf8.encode("STOP\n"));
+      connection!.output.allSent.then((_) {
+        setState(() {
+          isMonitoring = false;
+          messages.add("⏹️ Monitoramento pausado.");
+        });
+      });
+    }
   }
 
   @override

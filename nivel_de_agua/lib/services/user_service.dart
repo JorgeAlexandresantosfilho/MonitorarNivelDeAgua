@@ -15,4 +15,11 @@ class UserService {
       return null;
     }
   }
+  static Future<bool> deleteUser(int id) async {
+  final response = await http.delete(
+    Uri.parse('https://backendprojetouninassau-production.up.railway.app/monitoapi/usuarios/$id'),
+  );
+
+  return response.statusCode == 200;
+}
 }

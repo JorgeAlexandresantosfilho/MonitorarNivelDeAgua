@@ -4,7 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'log_report_screen.dart';
-import 'edit_profile_screen.dart';  
+import 'edit_profile_screen.dart';
+import '../services/user_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -24,38 +25,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _loadUserData();
-    _loadImagePath();
   }
 
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('id');
+    final nome = prefs.getString('nomeusuario') ?? '';
+
     setState(() {
-      _userId = prefs.getInt('id');
-      _nomeUsuario = prefs.getString('nomeusuario') ?? '';
+      _userId = id;
+      _nomeUsuario = nome;
     });
+
+    if (_userId != null) {
+      await _loadImagePath();
+    }
   }
 
   Future<void> _loadImagePath() async {
     final prefs = await SharedPreferences.getInstance();
+    final path = prefs.getString('profile_image_path_$_userId');
+
     setState(() {
-      _imagePath = prefs.getString('profile_image_path_${_userId ?? 0}');
+      _imagePath = path;
     });
   }
 
   Future<void> _pickImage() async {
     final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
     if (pickedFile == null) return;
 
     final appDir = await getApplicationDocumentsDirectory();
-
-  
     final profileImagesDir = Directory('${appDir.path}/profile_images');
     if (!profileImagesDir.existsSync()) {
       profileImagesDir.createSync();
     }
 
-   
     final fileName = 'profile_${_userId ?? 'default'}.png';
     final savedImage = await File(pickedFile.path).copy('${profileImagesDir.path}/$fileName');
 
@@ -65,6 +70,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _imagePath = savedImage.path;
     });
+  }
+
+  Future<void> _deleteAccount() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar exclusão'),
+        content: const Text('Tem certeza que deseja excluir sua conta?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Excluir'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true) return;
+
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getInt('id');
+    if (userId == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Usuário não encontrado')),
+      );
+      return;
+    }
+
+    final success = await UserService.deleteUser(userId);
+
+    if (!mounted) return;
+
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erro ao deletar conta')),
+      );
+      return;
+    }
+
+    await prefs.clear();
+
+    Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
   }
 
   @override
@@ -86,8 +138,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   CircleAvatar(
                     radius: 60,
                     backgroundColor: Colors.deepPurple,
-                    backgroundImage:
-                        _imagePath != null ? FileImage(File(_imagePath!)) : null,
+                    backgroundImage: _imagePath != null
+                        ? FileImage(File(_imagePath!))
+                        : null,
                     child: _imagePath == null
                         ? const Icon(Icons.person, size: 60, color: Colors.white)
                         : null,
@@ -122,8 +175,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 40),
-
-            
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepPurple,
@@ -131,12 +182,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
               onPressed: () async {
-                
                 final result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => EditProfileScreen()),
+                  MaterialPageRoute(builder: (_) => const EditProfileScreen()),
                 );
-                
                 if (result == true) {
                   _loadUserData();
                 }
@@ -144,7 +193,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: const Text('Alterar Dados'),
             ),
             const SizedBox(height: 10),
-
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.grey,
@@ -158,6 +206,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 );
               },
               child: const Text('Ver Relatório de Logs'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+              ),
+              onPressed: _deleteAccount,
+              child: const Text('Deletar Conta'),
             ),
           ],
         ),

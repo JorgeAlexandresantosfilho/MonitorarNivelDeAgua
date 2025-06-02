@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 50),
               ClipOval(
                 child: Image.asset(
-                  'assets/logo.png',
+                  'assets/logo/logo.png',
                   height: 150,
                   width: 150,
                   fit: BoxFit.cover,

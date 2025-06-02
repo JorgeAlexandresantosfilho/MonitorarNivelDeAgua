@@ -9,19 +9,22 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
-      splash: Column(
-        children: [
-          Center(
-            child: Lottie.asset(
-              "assets/animations/loadinganimation.json",
+      splash: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+              child: Lottie.asset(
+                "assets/animations/water.json",
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-      nextScreen: const LoginScreen(), 
-      splashIconSize: 400, 
-      backgroundColor: Colors.black, 
-      duration: 3000, 
+      nextScreen: const LoginScreen(),
+      splashIconSize: 250, 
+      backgroundColor: Colors.black,
+      duration: 3000,
     );
   }
 }
