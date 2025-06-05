@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static const String baseUrl = 'https://backendprojetouninassau-production.up.railway.app';
+  static const String baseUrl = 'https://backend-kipp.onrender.com';
 
   static Future<Map<String, dynamic>> login(String username, String password) async {
     try {

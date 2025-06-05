@@ -48,7 +48,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _isLoading = true;
     });
 
-    final url = Uri.parse('https://backendprojetouninassau-production.up.railway.app/monitoapi/usuarios/$userId');
+    final url = Uri.parse('https://backend-kipp.onrender.com/monitoapi/usuarios/$userId');
     final body = jsonEncode({
       "usuario": _usuarioController.text,
       "nomeusuario": _nomeController.text,

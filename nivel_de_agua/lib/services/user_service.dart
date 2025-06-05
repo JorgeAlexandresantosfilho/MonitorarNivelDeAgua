@@ -5,7 +5,7 @@ import '../models/user_model.dart';
 class UserService {
   static Future<UserModel?> getUserData(String login) async {
     final response = await http.get(
-      Uri.parse('https://backendprojetouninassau-production.up.railway.app/monitoapi/usuarios/$login'),
+      Uri.parse('https://backend-kipp.onrender.com/monitoapi/usuarios/$login'),
     );
 
     if (response.statusCode == 200) {
