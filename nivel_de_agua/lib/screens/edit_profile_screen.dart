@@ -48,7 +48,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _isLoading = true;
     });
 
-    final url = Uri.parse('https://backend-kipp.onrender.com/monitoapi/usuarios/$userId');
+    final url = Uri.parse('http://192.168.80.113:3000/monitoapi/usuarios/$userId');
     final body = jsonEncode({
       "usuario": _usuarioController.text,
       "nomeusuario": _nomeController.text,

@@ -5,7 +5,7 @@ import '../models/user_model.dart';
 class UserService {
   static Future<UserModel?> getUserData(String login) async {
     final response = await http.get(
-      Uri.parse('https://backend-kipp.onrender.com/monitoapi/usuarios/$login'),
+      Uri.parse('http://192.168.80.113:3000/monitoapi/usuarios/$login'),
     );
 
     if (response.statusCode == 200) {
@@ -17,7 +17,7 @@ class UserService {
   }
   static Future<bool> deleteUser(int id) async {
   final response = await http.delete(
-    Uri.parse('https://backendprojetouninassau-production.up.railway.app/monitoapi/usuarios/$id'),
+    Uri.parse('http://192.168.80.113:3000/monitoapi/usuarios/$id'),
   );
 
   return response.statusCode == 200;

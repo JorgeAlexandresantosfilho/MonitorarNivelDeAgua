@@ -14,7 +14,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  final TextEditingController _telefoneController = TextEditingController(); // <- Telefone
+  final TextEditingController _telefoneController = TextEditingController(); 
 
   void _register() async {
     final password = _passwordController.text;

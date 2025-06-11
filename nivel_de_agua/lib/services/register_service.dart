@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RegisterService {
-  static const String baseUrl = 'https://backend-kipp.onrender.com/monitoapi';
+  static const String baseUrl = 'http://192.168.80.113:3000/monitoapi';
 
   static Future<Map<String, dynamic>> register({
     required String usuario,

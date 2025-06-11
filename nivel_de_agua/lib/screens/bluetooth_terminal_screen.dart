@@ -69,7 +69,7 @@ class _BluetoothTerminalScreenState extends State<BluetoothTerminalScreen> {
   }
 
   Future<void> enviarParaBackend(double valor) async {
-    final url = Uri.parse("https://backend-kipp.onrender.com/monitoapi/registros");
+    final url = Uri.parse("http://192.168.80.113:3000/monitoapi/registros");
 
     try {
       final response = await http.post(

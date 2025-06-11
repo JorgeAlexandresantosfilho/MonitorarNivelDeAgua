@@ -5,7 +5,7 @@ import '../models/log_model.dart';
 class LogService {
   static Future<List<LogModel>> getLogs() async {
     final response = await http.get(
-      Uri.parse('https://backend-kipp.onrender.com/api/logs'),
+      Uri.parse('http://192.168.80.113:3000/api/logs'),
     );
 
     if (response.statusCode == 200) {

@@ -1,4 +1,4 @@
-name: nivel_de__agua
+name: monitor
 description: "A new Flutter project."
 publish_to: 'none'
 version: 1.0.0+1
@@ -35,7 +35,7 @@ flutter:
   assets:
     - assets/profile.png
     - assets/logo/logo.png
-    - assets/animations/water.json
+    - assets/animations/animacao.json
 
 flutter_icons:
   android: true

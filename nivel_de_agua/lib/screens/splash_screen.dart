@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
           children: [
             Flexible(
               child: Lottie.asset(
-                "assets/animations/water.json",
+                "assets/animations/animacao.json",
               ),
             ),
           ],

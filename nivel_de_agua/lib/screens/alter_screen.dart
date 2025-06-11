@@ -25,7 +25,7 @@ class _AlterScreenState extends State<AlterScreen> {
     }
 
     final url = Uri.parse(
-      'https://backend-kipp.onrender.com/monitoapi/usuarios/recuperar-senha',
+      'http://192.168.80.113:3000/monitoapi/usuarios/recuperar-senha',
     );
 
     try {
